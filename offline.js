@@ -108,6 +108,6 @@ exports.runOffline = function(directory) {
   }
 
   app.listen(PORT, function() {
-    console.log("Server listening on " + PORT);
+    console.log("🍞ToasterJS Offline Server listening on " + PORT);
   });
 }
