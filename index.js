@@ -19,6 +19,7 @@ module.exports = {
 
     // Add all route files to the handler
     handler.setApi(this.api);
+    handler.setAuthenticatorMethod(this.authenticatorMethod);
     handler.addRouteFiles(rootDirectory + "/api", rootDirectory + "/api", this);
 
     Object.keys(apiFile.paths).forEach(function(pathKey) {
