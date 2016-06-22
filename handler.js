@@ -3,11 +3,16 @@ var path = require("path");
 var bluebird = require("bluebird");
 var routeMap = {};
 
-api = null;
+var api = null;
+var authenticatorMethod = null;
 
 exports.setApi = function(apiObj) {
   api = apiObj;
-}
+};
+
+exports.setAuthenticatorMethod = function(authMethod) {
+  authenticatorMethod = authMethod;
+};
 
 // Loop through all of the directories under /api and add the route files to the route map
 exports.addRouteFiles = function(basePath, directory) {
@@ -112,6 +117,11 @@ exports.handle = function(methodDefinition, req) {
 
           if (req.headers && req.headers["x-user-token"]) {
             // We have a user token
+            if (authenticatorMethod) {
+              authUser = authenticatorMethod(req.headers["x-user-token"]);
+            } else {
+              console.error("Found an authenticated API endpoint, but no authenticatorMethod has been defined");
+            }
             //authUser = auth.verifyToken(req.headers["x-user-token"]);
           }
 
