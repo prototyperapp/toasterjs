@@ -9,7 +9,7 @@ exports.runOffline = function(directory) {
   const PORT = 3000;
 
   console.log("Running " + directory + "/app.js");
-  var api = require(directory + "/app.js").api;
+  var api = require(directory + "/app.js");
 
   // Does the api json file exist?
   try {
