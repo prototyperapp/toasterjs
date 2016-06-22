@@ -83,21 +83,21 @@ var checkParameters = function(methodDefinition, req) {
 
 };
 
-var getAuthedUserFromHeaders = function(req, callback) {
-  if (req.headers && req.headers["x-user-token"]) {
-    // We have a user token
-    if (authenticatorMethod) {
-      authenticatorMethod(req.headers["x-user-token"], function(authUser) {
-        console.log("Auth method has repsonded with");
-        console.log(authUser);
-        return callback(authUser);
-      });
+var getAuthedUserFromHeaders = function(req) {
+  return new Promise(function(resolve, reject) {
+    if (req.headers && req.headers["x-user-token"]) {
+      // We have a user token
+      if (authenticatorMethod) {
+        authenticatorMethod(req.headers["x-user-token"], function(authUser) {
+          resolve(authUser);
+        });
+      } else {
+        resolve(null);
+      }
     } else {
-      return callback(null);
+      resolve(null);
     }
-  } else {
-    return callback(null);
-  }
+  });
 };
 
 // Main handle method - this is where all api. methods get created
@@ -129,9 +129,7 @@ exports.handle = function(methodDefinition, req) {
             reject(checkedParameters.errors.join(", "));
           });
         } else {
-          return getAuthedUserFromHeaders(req, function(authUser) {
-            console.log("Auth user IS...--->");
-            console.log(authUser);
+          getAuthedUserFromHeaders(req).then(function(authUser) {
             if (methodDefinition.authRequired && !authUser) {
               // Method requires auth, but user isn't auth'd
               return new Promise(function(resolve, reject) {
