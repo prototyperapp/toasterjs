@@ -88,10 +88,11 @@ var getAuthedUserFromHeaders = function(req, callback) {
     // We have a user token
     if (authenticatorMethod) {
       authenticatorMethod(req.headers["x-user-token"], function(authUser) {
+        console.log("Auth method has repsonded with");
+        console.log(authUser);
         return callback(authUser);
       });
     } else {
-      console.error("Found an authenticated API endpoint, but no authenticatorMethod has been defined");
       return callback(null);
     }
   } else {
