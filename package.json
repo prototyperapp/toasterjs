@@ -1,0 +1,21 @@
+{
+  "name": "toasterjs",
+  "version": "0.1.0",
+  "description": "Framework for building out AWS lambda web apis using claudiajs ",
+  "main": "index.js",
+  "scripts": {
+
+  },
+  "bin": {
+    "toasterjs": "cli.js"
+  },
+  "dependencies": {
+    "express": "*",
+    "body-parser": "*",
+    "claudia-api-builder": "*",
+    "bluebird": "*",
+    "shelljs": "*"
+  },
+  "author": "Waffle and Toast",
+  "license": "TBC"
+}
