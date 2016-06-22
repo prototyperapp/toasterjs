@@ -130,6 +130,8 @@ exports.handle = function(methodDefinition, req) {
           });
         } else {
           return getAuthedUserFromHeaders(req, function(authUser) {
+            console.log("Auth user IS...--->");
+            console.log(authUser);
             if (methodDefinition.authRequired && !authUser) {
               // Method requires auth, but user isn't auth'd
               return new Promise(function(resolve, reject) {
