@@ -83,6 +83,22 @@ var checkParameters = function(methodDefinition, req) {
 
 };
 
+var getAuthedUserFromHeaders = function(req) {
+  if (req.headers && req.headers["x-user-token"]) {
+    // We have a user token
+    if (authenticatorMethod) {
+      authenticatorMethod(req.headers["x-user-token"], function(authUser) {
+        return callback(authUser);
+      });
+    } else {
+      console.error("Found an authenticated API endpoint, but no authenticatorMethod has been defined");
+      return callback(null);
+    }
+  } else {
+    return callback(null);
+  }
+};
+
 // Main handle method - this is where all api. methods get created
 exports.handle = function(methodDefinition, req) {
   var routeFolder = methodDefinition.path.substr(0, methodDefinition.path.lastIndexOf("/"));
@@ -112,32 +128,21 @@ exports.handle = function(methodDefinition, req) {
             reject(checkedParameters.errors.join(", "));
           });
         } else {
-          // Check for auth user in header
-          var authUser = null;
-
-          if (req.headers && req.headers["x-user-token"]) {
-            // We have a user token
-            if (authenticatorMethod) {
-              authUser = authenticatorMethod(req.headers["x-user-token"]);
+          getAuthedUserFromHeaders(req, function(authUser) {
+            if (methodDefinition.authRequired && !authUser) {
+              // Method requires auth, but user isn't auth'd
+              return new Promise(function(resolve, reject) {
+                reject("You must be logged in to call this endpoint");
+              });
             } else {
-              console.error("Found an authenticated API endpoint, but no authenticatorMethod has been defined");
+              // User is auth'd or method doesn't require auth
+              var environment = {
+                authUser: authUser
+              };
+
+              return methodToUse(req, checkedParameters.parameters, environment);
             }
-            //authUser = auth.verifyToken(req.headers["x-user-token"]);
-          }
-
-          if (methodDefinition.authRequired && !authUser) {
-            // Method requires auth, but user isn't auth'd
-            return new Promise(function(resolve, reject) {
-              reject("You must be logged in to call this endpoint");
-            });
-          } else {
-            // User is auth'd or method doesn't require auth
-            var environment = {
-              authUser: authUser
-            };
-
-            return methodToUse(req, checkedParameters.parameters, environment);
-          }
+          });
         }
       });
 
