@@ -128,7 +128,7 @@ exports.handle = function(methodDefinition, req) {
             reject(checkedParameters.errors.join(", "));
           });
         } else {
-          getAuthedUserFromHeaders(req, function(authUser) {
+          return getAuthedUserFromHeaders(req, function(authUser) {
             if (methodDefinition.authRequired && !authUser) {
               // Method requires auth, but user isn't auth'd
               return new Promise(function(resolve, reject) {
