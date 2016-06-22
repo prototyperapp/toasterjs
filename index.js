@@ -28,9 +28,6 @@ module.exports = {
         var methodDefinition = path[method];
         methodDefinition.method = method;
         methodDefinition.path = pathKey;
-
-        console.log("About to handle...");
-
         handler.handle(methodDefinition);
       });
     });
