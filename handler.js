@@ -86,6 +86,7 @@ var checkParameters = function(methodDefinition, req) {
 var getAuthedUserFromHeaders = function(req) {
   if (req.headers && req.headers["x-user-token"]) {
     // We have a user token
+    console.log(authenticatorMethod);
     if (authenticatorMethod) {
       authenticatorMethod(req.headers["x-user-token"], function(authUser) {
         return callback(authUser);
