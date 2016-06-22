@@ -18,7 +18,7 @@ exports.setAuthenticatorMethod = function(authMethod) {
 exports.addRouteFiles = function(basePath, directory) {
   fs.readdirSync(directory).forEach(function(file) {
     if (fs.statSync(directory + "/" + file).isDirectory()) {
-      addRouteFiles(basePath, directory + "/" + file);
+      exports.addRouteFiles(basePath, directory + "/" + file);
     } else {
       var routeKey = directory.substr(basePath.length);
       routeMap[routeKey] = require(directory + "/" + file);
