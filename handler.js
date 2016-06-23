@@ -133,7 +133,7 @@ exports.handle = function(methodDefinition, req) {
             if (methodDefinition.authRequired && !authUser) {
               // Method requires auth, but user isn't auth'd
               return new Promise(function(resolve, reject) {
-                reject({auth_error: "You must be logged in to call this endpoint"});
+                reject("Not logged in");
               });
             } else {
               // User is auth'd or method doesn't require auth
