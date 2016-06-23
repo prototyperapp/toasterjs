@@ -18,7 +18,7 @@ runOffline = function() {
 var main = function() {
 
 
-  console.log("\n🍞🍞🍞🍞🍞🍞🍞🍞🍞🍞🍞🍞\n🍞🍞🍞    ToasterJS    🍞🍞🍞\n🍞🍞🍞🍞🍞🍞🍞🍞🍞🍞🍞🍞\n");
+  console.log("\n🍞 🍞 🍞 🍞 🍞 🍞 🍞 🍞 🍞 🍞 🍞 🍞\nToasterJS\n🍞 🍞 🍞 🍞 🍞 🍞 🍞 🍞 🍞 🍞 🍞 🍞\n");
 
   if (process.argv.length < 3) {
     returnHelp();
